@@ -1,9 +1,9 @@
 <html>
 <script>
 fetch('https://api-v2.themuse.com/jobs?page=0').then(res => {
-  res.json().then(json => {
-    console.log(json);
-  });
+  return res.json();
+}).then(json => {
+  console.log(json);
 });
 </script>
 </html>
