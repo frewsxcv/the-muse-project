@@ -1,16 +1,18 @@
-let getCompanies = function () {
-  let url = 'https://api-v2.themuse.com/companies?page=0';
-  return fetch(url).then(res => {
-    return res.json();
-  });
-};
+class TheMuse {
+  static getCompanies() {
+    let url = 'https://api-v2.themuse.com/companies?page=0';
+    return fetch(url).then(res => {
+      return res.json();
+    });
+  }
+  static getJobs() {
+    let url = 'https://api-v2.themuse.com/jobs?page=0';
+    return fetch(url).then(res => {
+      return res.json();
+    });
+  }
+}
 
-let getJobs = function () {
-  let url = 'https://api-v2.themuse.com/jobs?page=0';
-  return fetch(url).then(res => {
-    return res.json();
-  });
-};
 
 class JobResults {
   constructor(elem) {
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   var jobResults = new JobResults(document.getElementById('job-results'));
 
-  getCompanies().then(json => {
+  TheMuse.getCompanies().then(json => {
     for (let company of json.results) {
       var select = document.createElement('option');
       select.textContent = company.name;
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchBtn.addEventListener('click', () => {
     jobResults.clear();
-    getJobs().then(json => {
+    TheMuse.getJobs().then(json => {
       for (let job of json.results) {
         jobResults.add(job.name);
       }
