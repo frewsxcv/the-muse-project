@@ -1,6 +1,6 @@
 class TheMuse {
   static getCompanies() {
-    let url = 'https://api-v2.themuse.com/companies?page=0';
+    const url = 'https://api-v2.themuse.com/companies?page=0';
     return fetch(url).then(res => {
       return res.json();
     });
@@ -11,7 +11,7 @@ class TheMuse {
       url += `&level=${level}`;
     }
     if (companies) {
-      for (let company of companies) {
+      for (const company of companies) {
         url += `&company=${company}`;
       }
     }
@@ -37,7 +37,7 @@ class CompanySelect {
     this.elem = elem;
   }
   add(companyName) {
-    var select = document.createElement('option');
+    const select = document.createElement('option');
     select.setAttribute('value', window.encodeURIComponent(companyName));
     select.textContent = companyName;
     this.elem.appendChild(select);
@@ -54,7 +54,7 @@ class SearchButton {
     this.elem = elem;
     this.handlers = [];
     this.elem.addEventListener('click', () => {
-      for (let func of this.handlers) {
+      for (const func of this.handlers) {
         func();
       }
     });
@@ -72,8 +72,8 @@ class JobResults {
   add(jobName, jobLink) {
     console.assert(jobName.length);
     console.assert(jobLink.length);
-    var div = document.createElement('div');
-    var a = document.createElement('a');
+    const div = document.createElement('div');
+    const a = document.createElement('a');
     a.setAttribute('href', jobLink);
     a.setAttribute('target', '_blank');
     a.textContent = jobName;
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var jobResults = new JobResults(document.getElementById('job-results'));
 
   TheMuse.getCompanies().then(json => {
-    for (let company of json.results) {
+    for (const company of json.results) {
       companySelect.add(company.name);
     }
   });
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const level = levelSelect.getSelected();
     TheMuse.getJobs(companies, level).then(json => {
       if (json.results.length) {
-        for (let job of json.results) {
+        for (const job of json.results) {
           jobResults.add(job.name, job.refs.landing_page);
         }
       } else {
