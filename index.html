@@ -3,23 +3,21 @@
   <style>
   body {
     width: 100%;
-    max-width: 20rem;
+    max-width: 30rem;
     margin: 0 auto;
   }
 
-  select {
-    width: 100%;
+  .field {
     margin-top: 1rem;
   }
 
-  button {
+  select, button {
     width: 100%;
-    margin-top: 1rem;
   }
   </style>
 </head>
 <body>
-  <div>
+  <div class='field'>
     <label>
       Level
       <select id='level-select'>
@@ -31,13 +29,13 @@
       </select>
     </label>
   </div>
-  <div>
+  <div class='field'>
     <label>
       Company
       <select id='company-select' multiple></select>
     </label>
   </div>
-  <div>
+  <div class='field'>
     <button id='search-btn'>Search</button>
   </div>
   <div id='job-results'>
