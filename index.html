@@ -20,7 +20,22 @@
 </head>
 <body>
   <div>
-    <select id='company-select' multiple></select>
+    <label>
+      Level
+      <select id='level-select'>
+        <option value=''></option>
+        <option value='Internship'>Internship</option>
+        <option value='Entry%20Level'>Entry Level</option>
+        <option value='Mid%20Level'>Mid Level</option>
+        <option value='Senior%20Level'>Senior Level</option>
+      </select>
+    </label>
+  </div>
+  <div>
+    <label>
+      Company
+      <select id='company-select' multiple></select>
+    </label>
   </div>
   <div>
     <button id='search-btn'>Search</button>

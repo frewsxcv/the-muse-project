@@ -21,6 +21,16 @@ class TheMuse {
   }
 }
 
+class LevelSelect {
+  constructor(elem) {
+    console.assert(elem);
+    this.elem = elem;
+  }
+  getSelected() {
+    return this.elem.value;
+  }
+}
+
 class CompanySelect {
   constructor(elem) {
     console.assert(elem);
@@ -56,6 +66,7 @@ class JobResults {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  var levelSelect = new LevelSelect(document.getElementById('level-select'));
   var companySelect = new CompanySelect(document.getElementById('company-select'));
 
   var searchBtn = document.getElementById('search-btn');
@@ -71,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchBtn.addEventListener('click', () => {
     jobResults.clear();
-    TheMuse.getJobs(companySelect.getSelected()).then(json => {
+    TheMuse.getJobs(companySelect.getSelected(), levelSelect.getSelected()).then(json => {
       for (let job of json.results) {
         jobResults.add(job.name);
       }
