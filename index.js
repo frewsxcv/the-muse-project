@@ -5,8 +5,16 @@ class TheMuse {
       return res.json();
     });
   }
-  static getJobs() {
-    let url = 'https://api-v2.themuse.com/jobs?page=0';
+  static getJobs(companies, level) {
+    let url = `https://api-v2.themuse.com/jobs?page=0`;
+    if (level) {
+      url += `&level=${level}`;
+    }
+    if (companies) {
+      for (let company of companies) {
+        url += `&company=${company}`;
+      }
+    }
     return fetch(url).then(res => {
       return res.json();
     });
