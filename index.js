@@ -11,7 +11,7 @@ class TheMuse {
       url += `&level=${level}`;
     }
     if (companies) {
-      for (const company of companies) {
+      for (let company of companies) {
         url += `&company=${company}`;
       }
     }
@@ -54,7 +54,7 @@ class SearchButton {
     this.elem = elem;
     this.handlers = [];
     this.elem.addEventListener('click', () => {
-      for (const func of this.handlers) {
+      for (let func of this.handlers) {
         func();
       }
     });
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var jobResults = new JobResults(document.getElementById('job-results'));
 
   TheMuse.getCompanies().then(json => {
-    for (const company of json.results) {
+    for (let company of json.results) {
       companySelect.add(company.name);
     }
   });
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const level = levelSelect.getSelected();
     TheMuse.getJobs(companies, level).then(json => {
       if (json.results.length) {
-        for (const job of json.results) {
+        for (let job of json.results) {
           jobResults.add(job.name, job.refs.landing_page);
         }
       } else {
