@@ -3,4 +3,4 @@ sudo: false
 install:
   - npm install jshint
 script:
-  - jshint .
+  - jshint --exclude node_modules .
