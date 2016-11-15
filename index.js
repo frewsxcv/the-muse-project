@@ -20,10 +20,20 @@ class TheMuse {
       });
     });
   }
+  /**
+   * @promise Fetch Companies from The Muse API
+   * @resolve {Array} array of Company JSON
+   * @reject {Error} validation error, connection error
+   */
   static getCompanies() {
     const url = 'https://api-v2.themuse.com/companies?';
     return TheMuse.apiCall(url);
   }
+  /**
+   * @promise Fetch Jobs from The Muse API
+   * @resolve {Array} array of Job JSON
+   * @reject {Error} validation error, connection error
+   */
   static getJobs(companies, level) {
     let url = `https://api-v2.themuse.com/jobs?`;
     if (level) {
