@@ -69,9 +69,15 @@ class JobResults {
     console.assert(elem);
     this.elem = elem;
   }
-  add(jobName) {
+  add(jobName, jobLink) {
+    console.assert(jobName.length);
+    console.assert(jobLink.length);
     var div = document.createElement('div');
-    div.textContent = jobName;
+    var a = document.createElement('a');
+    a.setAttribute('href', jobLink);
+    a.setAttribute('target', '_blank');
+    a.textContent = jobName;
+    div.appendChild(a);
     this.elem.appendChild(div);
   }
   clear() {
@@ -99,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const level = levelSelect.getSelected();
     TheMuse.getJobs(companies, level).then(json => {
       for (let job of json.results) {
-        jobResults.add(job.name);
+        jobResults.add(job.name, job.refs.landing_page);
       }
     });
   });
