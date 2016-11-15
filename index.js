@@ -1,21 +1,6 @@
 class TheMuse {
-  static getCompanies() {
-    const url = 'https://api-v2.themuse.com/companies?page=0';
-    return fetch(url).then(res => {
-      return res.json();
-    });
-  }
-  static getJobs(companies, level) {
-    let baseUrl = `https://api-v2.themuse.com/jobs?`;
-    if (level) {
-      baseUrl += `level=${level}&`;
-    }
-    if (companies) {
-      for (let company of companies) {
-        baseUrl += `company=${company}&`;
-      }
-    }
-    return fetch(baseUrl + 'page=0').then(res => {
+  static apiCall(url) {
+    return fetch(url + 'page=0').then(res => {
       return res.json();
     }).then(json => {
       if (json.page_count === 1) {
@@ -24,7 +9,7 @@ class TheMuse {
       const pageCount = json.page_count > 5 ? 5 : json.page_count;
       let promises = [];
       for (let i = 1; i < pageCount; i++) {
-        promises.push(fetch(baseUrl + `page=${i}`));
+        promises.push(fetch(url + `page=${i}`));
       }
       return Promise.all(promises).then(responses => {
         const jsonPromises = responses.map(n => n.json());
@@ -34,6 +19,22 @@ class TheMuse {
         return [].concat.apply(json.results, results);
       });
     });
+  }
+  static getCompanies() {
+    const url = 'https://api-v2.themuse.com/companies?';
+    return TheMuse.apiCall(url);
+  }
+  static getJobs(companies, level) {
+    let url = `https://api-v2.themuse.com/jobs?`;
+    if (level) {
+      url += `level=${level}&`;
+    }
+    if (companies) {
+      for (let company of companies) {
+        url += `company=${company}&`;
+      }
+    }
+    return TheMuse.apiCall(url);
   }
 }
 
@@ -114,8 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
   var searchButton = new SearchButton(document.getElementById('search-btn'));
   var jobResults = new JobResults(document.getElementById('job-results'));
 
-  TheMuse.getCompanies().then(json => {
-    for (let company of json.results) {
+  TheMuse.getCompanies().then(companies => {
+    for (let company of companies) {
       companySelect.add(company.name);
     }
   });
