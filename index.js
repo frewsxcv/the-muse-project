@@ -12,6 +12,23 @@ let getJobs = function () {
   });
 };
 
+class JobResults {
+  constructor(elem) {
+    console.assert(elem);
+    this.elem = elem;
+  }
+  add(jobName) {
+    var div = document.createElement('div');
+    div.textContent = jobName;
+    this.elem.appendChild(div);
+  }
+  clear() {
+    while (this.elem.hasChildNodes()) {
+      this.elem.lastChild.remove();
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   var companySelect = document.getElementById('company-select');
   console.assert(companySelect);
@@ -19,8 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var searchBtn = document.getElementById('search-btn');
   console.assert(searchBtn);
 
-  var jobResults = document.getElementById('job-results');
-  console.assert(jobResults);
+  var jobResults = new JobResults(document.getElementById('job-results'));
 
   getCompanies().then(json => {
     for (let company of json.results) {
@@ -31,14 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   searchBtn.addEventListener('click', () => {
-    while (jobResults.hasChildNodes()) {
-      jobResults.lastChild.remove();
-    }
+    jobResults.clear();
     getJobs().then((json) => {
       for (let job of json.results) {
-        var div = document.createElement('div');
-        div.textContent = job.name;
-        jobResults.appendChild(div);
+        jobResults.add(job.name);
       }
     });
   });
