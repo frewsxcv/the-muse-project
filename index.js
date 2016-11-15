@@ -21,6 +21,22 @@ class TheMuse {
   }
 }
 
+class CompanySelect {
+  constructor(elem) {
+    console.assert(elem);
+    this.elem = elem;
+  }
+  add(companyName) {
+    var select = document.createElement('option');
+    select.setAttribute('value', window.encodeURIComponent(companyName));
+    select.textContent = companyName;
+    this.elem.appendChild(select);
+  }
+  getSelected() {
+    let selectedOptions = Array.prototype.slice.call(this.elem.selectedOptions);
+    return selectedOptions.map(n => n.value);
+  }
+}
 
 class JobResults {
   constructor(elem) {
@@ -40,8 +56,7 @@ class JobResults {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  var companySelect = document.getElementById('company-select');
-  console.assert(companySelect);
+  var companySelect = new CompanySelect(document.getElementById('company-select'));
 
   var searchBtn = document.getElementById('search-btn');
   console.assert(searchBtn);
@@ -50,16 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   TheMuse.getCompanies().then(json => {
     for (let company of json.results) {
-      var select = document.createElement('option');
-      select.setAttribute('value', window.encodeURIComponent(company.name));
-      select.textContent = company.name;
-      companySelect.appendChild(select);
+      companySelect.add(company.name);
     }
   });
 
   searchBtn.addEventListener('click', () => {
     jobResults.clear();
-    TheMuse.getJobs().then(json => {
+    TheMuse.getJobs(companySelect.getSelected()).then(json => {
       for (let job of json.results) {
         jobResults.add(job.name);
       }
