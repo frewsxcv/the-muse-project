@@ -11,3 +11,16 @@ let getJobs = function () {
     return res.json();
   });
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+  var companySelect = document.getElementById('company-select');
+  console.assert(companySelect);
+
+  getCompanies().then(json => {
+    for (let company of json.results) {
+      var select = document.createElement('option');
+      select.textContent = company.name;
+      companySelect.appendChild(select);
+    }
+  });
+}, false);
