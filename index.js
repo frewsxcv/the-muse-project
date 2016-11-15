@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
   TheMuse.getCompanies().then(json => {
     for (let company of json.results) {
       var select = document.createElement('option');
+      select.setAttribute('value', window.encodeURIComponent(company.name));
       select.textContent = company.name;
       companySelect.appendChild(select);
     }
