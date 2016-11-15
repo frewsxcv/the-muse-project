@@ -95,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchButton.onClick(() => {
     jobResults.clear();
-    TheMuse.getJobs(companySelect.getSelected(), levelSelect.getSelected()).then(json => {
+    const companies = companySelect.getSelected();
+    const level = levelSelect.getSelected();
+    TheMuse.getJobs(companies, level).then(json => {
       for (let job of json.results) {
         jobResults.add(job.name);
       }
