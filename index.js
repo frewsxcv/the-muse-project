@@ -1,12 +1,12 @@
 class TheMuse {
   static apiCall(url) {
+    const maxPagesToFetch = 5;
     return fetch(url + 'page=0').then(res => {
       return res.json();
     }).then(json => {
-      if (json.page_count === 1) {
-        return json.results;
-      }
-      const pageCount = json.page_count > 5 ? 5 : json.page_count;
+      const pageCount = (
+        json.page_count > maxPagesToFetch ?
+        maxPagesToFetch : json.page_count);
       let promises = [];
       for (let i = 1; i < pageCount; i++) {
         promises.push(fetch(url + `page=${i}`));
