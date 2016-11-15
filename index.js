@@ -85,6 +85,11 @@ class JobResults {
       this.elem.lastChild.remove();
     }
   }
+  indicateEmpty() {
+    var div = document.createElement('div');
+    div.textContent = 'No jobs found! Try again!';
+    this.elem.appendChild(div);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -104,8 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const companies = companySelect.getSelected();
     const level = levelSelect.getSelected();
     TheMuse.getJobs(companies, level).then(json => {
-      for (let job of json.results) {
-        jobResults.add(job.name, job.refs.landing_page);
+      if (json.results.length) {
+        for (let job of json.results) {
+          jobResults.add(job.name, job.refs.landing_page);
+        }
+      } else {
+        jobResults.indicateEmpty();
       }
     });
   });
