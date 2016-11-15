@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchBtn.addEventListener('click', () => {
     jobResults.clear();
-    getJobs().then((json) => {
+    getJobs().then(json => {
       for (let job of json.results) {
         jobResults.add(job.name);
       }
