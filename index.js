@@ -6,17 +6,33 @@ class TheMuse {
     });
   }
   static getJobs(companies, level) {
-    let url = `https://api-v2.themuse.com/jobs?page=0`;
+    let baseUrl = `https://api-v2.themuse.com/jobs?`;
     if (level) {
-      url += `&level=${level}`;
+      baseUrl += `level=${level}&`;
     }
     if (companies) {
       for (let company of companies) {
-        url += `&company=${company}`;
+        baseUrl += `company=${company}&`;
       }
     }
-    return fetch(url).then(res => {
+    return fetch(baseUrl + 'page=0').then(res => {
       return res.json();
+    }).then(json => {
+      if (json.page_count === 1) {
+        return json.results;
+      }
+      const pageCount = json.page_count > 5 ? 5 : json.page_count;
+      let promises = [];
+      for (let i = 1; i < pageCount; i++) {
+        promises.push(fetch(baseUrl + `page=${i}`));
+      }
+      return Promise.all(promises).then(responses => {
+        const jsonPromises = responses.map(n => n.json());
+        return Promise.all(jsonPromises);
+      }).then(jsons => {
+        let results = jsons.map(n => n.results);
+        return [].concat.apply(json.results, results);
+      });
     });
   }
 }
@@ -108,9 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
     jobResults.clear();
     const companies = companySelect.getSelected();
     const level = levelSelect.getSelected();
-    TheMuse.getJobs(companies, level).then(json => {
-      if (json.results.length) {
-        for (let job of json.results) {
+    TheMuse.getJobs(companies, level).then(jobs => {
+      if (jobs.length) {
+        for (let job of jobs) {
           jobResults.add(job.name, job.refs.landing_page);
         }
       } else {
